@@ -1,0 +1,157 @@
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+    font-family: serif;
+    background: url(./img/leaves-pattern.png) !important;
+}
+
+#my-photo {
+    width: 100px;
+    height: 100px;
+    background-image: url(./img/me_git_100.jpg);
+    background-size: 100px;
+    background-position: center;
+    border-radius: 100px;
+    display: inline-block;
+
+}
+
+h1 {
+    text-align: center;
+}
+
+.toy {
+    display: inline-block;
+}
+
+.biji-info {
+    margin-top: 18%;
+}
+.content {
+    display: inline-block;
+
+}
+
+.photo-container {
+    padding-top: 10px;
+}
+
+.name-title {
+    float: left;
+}
+
+#social-links-wrapper {
+    margin-top:1em;
+    margin-bottom:1em;
+    margin-right: 20px;
+}
+
+.large-4.columns.love {
+    margin-top: 70px;
+}
+
+
+
+.fab{
+  font-size: 30px;
+  color: black;
+}
+
+.far {
+    font-size: 30px;
+    color: black;
+}
+
+a:link {
+    text-decoration: none;
+    color: #4B4F56;
+}
+
+.social-links {
+    list-style-type: none;
+    display: inline;
+}
+
+ul.social-links li {
+    display: inline;
+    font-size: 1.25;
+    padding: 3px;
+
+}
+
+.main-outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.main-middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.main-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.test {
+    height:20px;
+    width: 20px;
+}
+
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 10px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 10px;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.picker {
+    padding-left: -5px;
+}
+
+.game {
+  margin: 0 auto;
+  padding-top:25px;
+  padding-left: 30px;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+  height: 40px;
+}
