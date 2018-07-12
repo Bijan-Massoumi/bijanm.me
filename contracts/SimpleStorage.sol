@@ -1,54 +1,34 @@
 pragma solidity ^0.4.18;
 
 contract SimpleStorage {
-
-    struct PixelOwner {
-        address owner;
-        uint value;
-    }
-
-    mapping(uint => PixelOwner ) pixelPrice;
-    mapping(address => uint) refundAmount;
-    address constant developer = 0xd00a7D58C98f785d389adccE4026fF8F77739Ba0;
+    mapping(uint => uint8 ) colorNums;
     uint constant canvasSize = 2500;
+    uint constant maxNumColors = 17;
 
-    event PixelPurchased(address indexed who, uint24 indexed pixelNumber, string color, uint amountPaid );
+    event PixelPurchased(uint24 indexed pixelNumber, uint8 colorNum );
 
-    function set(uint24 pixelNum, string color) public payable {
-        if(msg.value == 0 || pixelNum >= canvasSize ) revert();
+    function setPixels(uint16[] pixels, uint8[] colors) public {
+        if (pixels.length != colors.length || pixels.length == 0) revert();
 
-        if (msg.value > pixelPrice[pixelNum].value) {
-            PixelOwner currOwner = pixelPrice[pixelNum];
-            refundAmount[currOwner.owner] += currOwner.value;
-            refundAmount[developer] += (msg.value - currOwner.value);
-            currOwner.value = msg.value;
-            currOwner.owner = msg.sender;
-            emit PixelPurchased(msg.sender, pixelNum, color, msg.value);
-            return;
+        for (uint i = 0; i < pixels.length; i++) {
+            set(pixels[i],colors[i]);
         }
-        // That means the ammount they provided is less than the current top bid
-        revert();
     }
 
-    function  withdraw() public {
-        // Check if there is a balance for the caller
-        require(refundAmount[msg.sender] > 0);
-
-        uint amt = refundAmount[msg.sender];
-
-        refundAmount[msg.sender] = 0;
-
-        assert(msg.sender.send(amt));
-
-        return;
+    function set(uint16 pixelNum, uint8 colorNum) private {
+        if(pixelNum >= canvasSize || colorNum > maxNumColors || colorNum == 0 ) revert();
+        
+        colorNums[pixelNum] = colorNum;
+        emit PixelPurchased(pixelNum, colorNum);
     }
 
-    function getPixelPrice(uint pixelNum) public view returns (address, uint) {
-        return (pixelPrice[pixelNum].owner, pixelPrice[pixelNum].value);
+    function returnCanvas() public view returns(uint8[canvasSize]){
+        uint8[canvasSize] memory returnArray;
+        for (uint i = 0; i < returnArray.length;i++) {
+            if (colorNums[i] > 0) {
+                returnArray[i] = colorNums[i];
+            }
+        }
+        return returnArray;
     }
-
-    function getAddrPayout() public view returns (uint) {
-        return refundAmount[msg.sender];
-    }
-
 }

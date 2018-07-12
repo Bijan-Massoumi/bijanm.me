@@ -6,7 +6,7 @@ html {
 body {
     text-align: center;
     font-family: serif;
-    background: url(./img/leaves-pattern.png) !important;
+    background: url(./img/funky-lines.png) !important;
 }
 
 #my-photo {
@@ -24,8 +24,28 @@ h1 {
     text-align: center;
 }
 
+.help-link {
+    color: blue;
+    text-decoration: underline !important;
+}
 .toy {
+    text-align: left;
     display: inline-block;
+}
+.buy-button {
+    border-style: solid !important;
+    border-width: 1px;
+    margin-left: 35%;
+}
+.all-squares {
+    border-style: solid !important;
+    border-width: 4px;
+}
+.menu-bar {
+    background-color: grey;
+    border-style: solid !important;
+    border-width: 4px;
+    border-bottom-width: 0px;
 }
 
 .biji-info {
@@ -132,6 +152,10 @@ ul.social-links li {
   width: 10px;
 }
 
+.dimmed {
+    filter: brightness(30%);
+}
+
 .square:focus {
   outline: none;
 }
@@ -141,13 +165,22 @@ ul.social-links li {
 }
 
 .picker {
-    padding-left: -5px;
+    padding-left: 50px
+}
+
+.trash-buy {
+    margin-top: 25px;
+
+}
+.can {
+    font-size: 35px;
+    color: white;
 }
 
 .game {
   margin: 0 auto;
-  padding-top:25px;
-  padding-left: 30px;
+  margin-top:25px;
+  margin-left: 30px;
   flex-direction: row;
 }
 
