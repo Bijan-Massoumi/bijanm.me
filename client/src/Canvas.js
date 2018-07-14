@@ -254,22 +254,42 @@ export default class Canvas extends React.Component {
         }
     }
 
+
+
     render() {
+
+        const HelpPopupButton = () =>
+            <Popup
+                trigger={<button className="menu-item far fa-question-circle trash-buy question" />}
+                position="bottom center"
+                closeOnDocumentClick
+            >
+                This is a canvas whose state is stored on the Ethereum Blockchain.
+                To write to the canvas: download and install the Metamask browser extension,
+                create a wallet, select some pixels, then send a transaction
+                by clicking the up arrow! Once the transaction is confirmed, it will appear here.
+                Thanks for visiting!
+            </Popup>
+
+
         return (
             <div className="game toy">
                 <div className="row menu-bar">
-                    <div className="large-8 columns picker">
-                        <GithubPicker
-                            colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#BEDADC', '#C4DEF6', '#BED3F3', '#D4C4FB','#000000']}
-                            triangle="hide"
-                            onChangeComplete= {this.changeColor} />
+                    <HelpPopupButton />
+                    <div className="menu-item">
+                        <div className="picker">
+                            <GithubPicker
+                                colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#BEDADC', '#C4DEF6', '#BED3F3', '#D4C4FB','#000000']}
+                                triangle="hide"
+                                onChangeComplete= {this.changeColor} />
+                        </div>
                     </div>
-                    <div className="large-2 columns trash-buy">
-                        <button className="fas fa-trash-alt can"
+                    <div className="menu-item trash-buy pos">
+                        <button className="fas fa-trash-alt set"
                         onClick={() => this.setState({potentialDiffs: []})}/>
                     </div>
-                    <div className="large-2 columns trash-buy">
-                        <button className="fas fa-arrow-circle-up can"
+                    <div className="menu-item trash-buy pos">
+                        <button className="fas fa-arrow-circle-up set"
                         onClick={() => this.sendTransaction()}/>
                     </div>
                 </div>

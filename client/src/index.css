@@ -41,12 +41,7 @@ h1 {
     border-style: solid !important;
     border-width: 4px;
 }
-.menu-bar {
-    background-color: grey;
-    border-style: solid !important;
-    border-width: 4px;
-    border-bottom-width: 0px;
-}
+
 
 .biji-info {
     margin-top: 18%;
@@ -153,7 +148,7 @@ ul.social-links li {
 }
 
 .dimmed {
-    filter: brightness(30%);
+    filter: brightness(60%);
 }
 
 .square:focus {
@@ -164,17 +159,40 @@ ul.social-links li {
   background: #ddd;
 }
 
+.menu-bar {
+    background-color: grey;
+    border-style: solid !important;
+    border-width: 4px;
+    border-bottom-width: 0px;
+}
+
 .picker {
-    padding-left: 50px
+    width: 200px !important;
+    margin-left: 30px;
 }
 
 .trash-buy {
+    background-position: center;
     margin-top: 25px;
-
+    text-align: center;
 }
-.can {
+.set {
     font-size: 35px;
     color: white;
+}
+.pos {
+    margin-left: 30px;
+}
+
+
+.question {
+    margin-left: 10px;
+    font-size: 35px;
+    color:white;
+}
+
+.menu-item {
+    float: left;
 }
 
 .game {
