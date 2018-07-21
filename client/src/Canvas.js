@@ -44,10 +44,16 @@ class Square extends React.Component {
     }
 
     render() {
+        let buttonStyle = {
+            backgroundColor: this.state.color,
+            width: this.props.squareDim,
+            height: this.props.squareDim
+        };
+
         if (this.props.dimmed){
             return (
                     <button className="square dimmed"
-                        style={{backgroundColor: this.state.color}}
+                        style={buttonStyle}
                         onMouseLeave={() => this.hoverLeave()}
                         onMouseEnter={() => this.hoverEnter()}
                         onClick={() => this.props.onSquareClick()}/>
@@ -56,11 +62,10 @@ class Square extends React.Component {
         } else {
             return (
                     <button className="square"
-                        style={{backgroundColor: this.state.color}}
+                        style={buttonStyle}
                         onMouseLeave={() => this.hoverLeave()}
                         onMouseEnter={() => this.hoverEnter()}
                         onClick={() => this.props.onSquareClick()}/>
-
             );
         }
     }
@@ -76,12 +81,14 @@ class BitMap extends React.Component {
             web3:null,
             contract: null,
             squares: Array(this.props.dim*this.props.dim).fill(null),
+            squareDim: this.getSquareDim()
         }
     }
 
     shouldComponentUpdate(nextProps,nextState){
         if (this.hasReceivedPixels || this.hasEditedDiffs
-            ||(this.props.potentialDiffs.length > 0 && nextProps.potentialDiffs.length === 0)) {
+            ||(this.props.potentialDiffs.length > 0 && nextProps.potentialDiffs.length === 0)
+            || this.state.squareDim !== nextState.squareDim) {
             this.hasReceivedPixels = false;
             this.hasEditedDiffs = false;
             return true;
@@ -89,7 +96,18 @@ class BitMap extends React.Component {
         return false
     }
 
+    getSquareDim() {
+        if (window.innerWidth < 390) {
+            return 6.5;
+        } else if (window.innerWidth < 500){
+            return 8;
+        } else {
+            return 10;
+        }
+    }
+
     componentDidMount = async () => {
+        window.addEventListener('resize', () => this.setState({squareDim: this.getSquareDim()}))
         try {
           // Get network provider and web3 instance.
           const web3 = await getWeb3()
@@ -157,6 +175,7 @@ class BitMap extends React.Component {
                     diffs={this.props.potentialDiffs}
                     onSquareClick={() => this.addOrRemove(pixelNum)}
                     dimmed={dimmed}
+                    squareDim={this.state.squareDim}
                 />
         );
     }
@@ -201,15 +220,29 @@ export default class Canvas extends React.Component {
     constructor(props) {
         super(props);
         this.dim = 50;
+        this.diffsAltered = false;
         this.state={
             web3: null,
             contract: null,
             potentialDiffs: [],
-            selectedColor: "#000000"
+            selectedColor: "#000000",
+            padding: this.getCorrectPadding()
+        }
+    }
+
+
+    getCorrectPadding() {
+        if (window.innerWidth <= 390) {
+             return 3.5;
+        } else if (window.innerWidth < 500) {
+            return 10;
+        } else {
+            return 30;
         }
     }
 
     componentDidMount = async () => {
+        window.addEventListener('resize', () => this.setState({padding: this.getCorrectPadding()}))
         try {
           // Get network provider and web3 instance.
           const web3 = await getWeb3()
@@ -223,12 +256,21 @@ export default class Canvas extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps,nextState) {
+        if ((nextState.padding !== this.state.padding) || this.diffsAltered) {
+            this.diffsAltered = false;
+            return true;
+        }
+        return false;
+    }
+
     changeColor = (color) => {
         this.setState({selectedColor: color.hex});
     }
 
     addToDeltas(color,pixelNum){
         console.log('adding to deltas',pixelNum);
+        this.diffsAltered = true;
         const newDiffs = this.state.potentialDiffs.slice();
         newDiffs.push({pixelNum:pixelNum, color:color});
         this.setState({potentialDiffs: newDiffs})
@@ -236,6 +278,7 @@ export default class Canvas extends React.Component {
 
     removeFromArray(newColor,pixelNum) {
         console.log('removing from deltas');
+        this.diffsAltered = true;
         const newDiffs = this.state.potentialDiffs.slice();
         const idx = newDiffs.findIndex( (obj) => obj.pixelNum === pixelNum);
         newDiffs[idx].color === newColor ? newDiffs.splice(idx, 1): newDiffs[idx].color = newColor;
@@ -254,14 +297,16 @@ export default class Canvas extends React.Component {
         }
     }
 
-
-
     render() {
+        const paddingStyle = {
+            marginLeft: this.state.padding,
+            fontSize: 35
+        };
 
         const HelpPopupButton = () =>
             <Popup
-                trigger={<button className="menu-item far fa-question-circle trash-buy question" />}
-                position="bottom center"
+                trigger={<button className="menu-item far fa-question-circle trash-buy question" style={paddingStyle}/>}
+                position= {this.state.padding > 10 ? "bottom center": "right center"}
                 closeOnDocumentClick
             >
                 This is a canvas whose state is stored on the Ethereum Blockchain.
@@ -272,25 +317,33 @@ export default class Canvas extends React.Component {
             </Popup>
 
 
+
         return (
             <div className="game toy">
                 <div className="row menu-bar">
                     <HelpPopupButton />
                     <div className="menu-item">
-                        <div className="picker">
+                        <div style={paddingStyle}>
                             <GithubPicker
                                 colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#BEDADC', '#C4DEF6', '#BED3F3', '#D4C4FB','#000000']}
+                                width = {this.state.padding === 3.5? "150px": "200px"}
                                 triangle="hide"
                                 onChangeComplete= {this.changeColor} />
                         </div>
                     </div>
-                    <div className="menu-item trash-buy pos">
+                    <div className="menu-item trash-buy" style={paddingStyle}>
                         <button className="fas fa-trash-alt set"
-                        onClick={() => this.setState({potentialDiffs: []})}/>
+                        onClick={() => {
+                            this.diffsAltered = true;
+                            this.setState({potentialDiffs: []})
+                        } }/>
                     </div>
-                    <div className="menu-item trash-buy pos">
+                    <div className="menu-item trash-buy" style={paddingStyle}>
                         <button className="fas fa-arrow-circle-up set"
-                        onClick={() => this.sendTransaction()}/>
+                        onClick={() => {
+                            this.diffsAltered = true;
+                            this.sendTransaction()
+                        }}/>
                     </div>
                 </div>
                 <BitMap

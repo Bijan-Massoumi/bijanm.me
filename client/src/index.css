@@ -139,12 +139,10 @@ ul.social-links li {
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 10px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 10px;
 }
 
 .dimmed {
@@ -166,10 +164,7 @@ ul.social-links li {
     border-bottom-width: 0px;
 }
 
-.picker {
-    width: 200px !important;
-    margin-left: 30px;
-}
+
 
 .trash-buy {
     background-position: center;
@@ -177,17 +172,13 @@ ul.social-links li {
     text-align: center;
 }
 .set {
-    font-size: 35px;
     color: white;
 }
-.pos {
-    margin-left: 30px;
-}
+
 
 
 .question {
     margin-left: 10px;
-    font-size: 35px;
     color:white;
 }
 
